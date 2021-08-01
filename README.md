@@ -13,14 +13,26 @@ Fueled by GPT-NEO via the Huggingface API
 
 You can change your current conversation partner by sending /person ANOTHER NAME
 
+### Stop the bot
+
+- ctl + c stops the telegram bot. 
+
 ## Installation
 
-```python -m venv env ```
+- Create a Telegram Bot for a TOKEN
+- Get a HUGGINGFACE API Token (freemium version available!)
+- Create a telegram_creds.json with those keys:
 
-```pip install -r requirements ```
+```json 
+{
+  "Token" : "YOUR BOT TOKEN",
+  "HUGGINGFACE_API" : "YOUR HUGGINGFACE API TOKEN",
+  "DEVELOPER_CHAT_ID" : YOUR_CHAT_ID
+}
+```
 
-```python telegram_artist_ai.py ```
+- ```python3 -m venv env ```
+- ```pip install -r requirements ```
+- ```python telegram_artist_ai.py ```
 
-## Stop the bot
-
-ctl + c stops the telegram bot. 
+Now the bot is up and running
