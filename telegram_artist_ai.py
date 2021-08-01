@@ -112,17 +112,22 @@ dispatcher.add_handler(person_handler)
 @send_action(ChatAction.TYPING)
 def ai(update, context):
     """ GENERATE TEXT VIA HUGGINGFACE API """
-    person = context.chat_data["person"]
-    p = gpt_neo.Person(person)
-    prompt = p.question(question=update.message.text)
-    t = gpt_neo.TextGen()
-    ai_answer = t.query(prompt)
+    person = context.chat_data.get("person", None)
+    if person:
+        p = gpt_neo.Person(person)
+        prompt = p.question(question=update.message.text)
+        t = gpt_neo.TextGen()
+        ai_answer = t.query(prompt)
 
-    # If there has been an error
-    try:
-        update.message.reply_text(profanity.censor(ai_answer))
-    except:
-        update.message.reply_text("Let's talk about something else.")
+        # If there has been an error
+        try:
+            update.message.reply_text(profanity.censor(ai_answer))
+        except Exception as e:
+            update.message.reply_text("Let's talk about something else.")
+            print(e, flush=True)
+    else:
+        update.message.reply_text(
+            "You haven't told me a person to talk to yet. Send i.e. /person Jesus")
 
 
 ai_handler = MessageHandler(Filters.text & (~Filters.command), ai)
