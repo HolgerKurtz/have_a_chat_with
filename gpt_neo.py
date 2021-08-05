@@ -54,7 +54,7 @@ class TextGen():
         self.API_URL = "https://api-inference.huggingface.co/models/EleutherAI/gpt-neo-2.7B"
         self.headers = {"Authorization": f"Bearer {self.HUG_API}"}
         self.parameters = {
-            'max_new_tokens': 15,  # number of generated tokens
+            'max_new_tokens': 20,  # number of generated tokens
             'temperature': 0.9,   # controlling the randomness of generations
             'end_sequence': "###"  # stopping sequence for generation
         }
