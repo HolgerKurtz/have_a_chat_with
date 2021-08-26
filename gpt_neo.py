@@ -84,8 +84,8 @@ class TextGen():
 
             return answer_cleaned_again
         except requests.exceptions.HTTPError:
-            print("Error:"+" ".join(response.json()['error']))
-            return None
+            er = "Error:"+" ".join(response.json()['error'])
+            return er
 
 
 def main():
