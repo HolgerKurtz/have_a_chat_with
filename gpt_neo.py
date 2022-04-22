@@ -11,7 +11,7 @@ class Person:
 
     def get_context(self, line=None) -> list:
         context = [
-            f"The following is a conversation with {self.person}. {self.person} is helpful, clever and knows all about himself.\n\n",
+            f"The following is a conversation with {self.person} as a chatbot. {self.person} is helpful, clever and knows all about himself.\n\n",
             f"Me : who are you?\n",
             f"{self.person} : I am {self.person}\n",
             f"###\n",
@@ -51,11 +51,11 @@ class TextGen():
 
     def __init__(self):
         self.HUG_API = self.get_hug_creds()
-        self.API_URL = "https://api-inference.huggingface.co/models/EleutherAI/gpt-neo-2.7B"
+        self.API_URL = "https://api-inference.huggingface.co/models/EleutherAI/gpt-j-6B"
         self.headers = {"Authorization": f"Bearer {self.HUG_API}"}
         self.parameters = {
-            'max_new_tokens': 20,  # number of generated tokens
-            'temperature': 0.9,   # controlling the randomness of generations
+            'max_new_tokens': 50,  # number of generated tokens
+            'top_p': 1,   # controlling the randomness of generations
             'end_sequence': "###"  # stopping sequence for generation
         }
         self.options = {'use_cache': False}
