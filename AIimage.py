@@ -12,7 +12,10 @@ def generate_image(prompt_text):
         n=1,
         size="256x256"
         )
-    return response["data"][0]["url"]
+    try:
+        return response["data"][0]["url"]
+    except:
+        return "Leider ist ein Fehler aufgetreten."
 
 if __name__ == "__main__":
     generate_image("brown wire haired dachshund, highly realistic photograph")
