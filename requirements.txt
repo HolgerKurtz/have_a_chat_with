@@ -1,3 +1,5 @@
 better-profanity==0.7.0
 python-telegram-bot==13.7
 requests==2.26.0
+openai
+python-dotenv

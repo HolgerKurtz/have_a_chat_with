@@ -3,3 +3,4 @@ env/
 *.json
 .DS_Store
 __pycache__
+*.env

@@ -1,15 +1,18 @@
 import json
 import logging
+import os
 import html
 import traceback
 from functools import wraps
+from dotenv import load_dotenv
 
 from telegram import Bot, ChatAction, Update, ParseMode
 from telegram.ext import CommandHandler, MessageHandler, Filters, Updater, CallbackContext
 from better_profanity import profanity
 
-import gpt_neo
+import AIimage
 
+load_dotenv()
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
@@ -20,8 +23,8 @@ logger = logging.getLogger(__name__)
 with open('telegram_creds.json', "r") as json_file:
     telegram_creds = json.load(json_file)
 
-TOKEN = telegram_creds.get("Token")
-DEVELOPER_CHAT_ID = telegram_creds.get("DEVELOPER_CHAT_ID")
+TOKEN = os.getenv("Token")
+DEVELOPER_CHAT_ID = os.getenv("DEVELOPER_CHAT_ID")
 
 bot = Bot(token=TOKEN)
 updater = Updater(token=TOKEN, use_context=True)
@@ -73,74 +76,30 @@ def error_handler(update: object, context: CallbackContext) -> None:
     # Finally, send the message
     context.bot.send_message(chat_id=DEVELOPER_CHAT_ID,
                              text=message, parse_mode=ParseMode.HTML)
-
-
 dispatcher.add_error_handler(error_handler)
 
 
 def start(update, context):
-    update.message.reply_text(
-        "Hi. This Bot uses an AI called GPT-NEO to simulate a chat with a famous person.")
-    update.message.reply_text(
-        "Send i.e. \n/person Winston Churchill\n to start or switch to a conversation. If something goes wrong. Just go along with it and have some fun ;).")
-
-
+    update.message.reply_text("Wuff")
 start_handler = CommandHandler('start', start)
 dispatcher.add_handler(start_handler)
 
+def ai_image(update, context):
+    update.message.reply_text("Wuff")
+    
+start_handler = CommandHandler('start', start)
+dispatcher.add_handler(start_handler)
 
 @send_action(ChatAction.TYPING)
-def person(update, context):
-    """ ASK FOR A PERSON """
-    chat_id = update.effective_chat.id
-    if str(update.message.text).lower() == '/person':
-        update.message.reply_text(
-            f"You're currently talking to {context.chat_data.get('person', 'nobody. Send i.e. /person Winston Churchill to start.')}")
-    else:
-        person_list = update.message.text.split(' ')[1:]
-        person = ' '.join(person_list)
-        context.chat_data["person"] = person
-        update.message.reply_text(
-            f"Done. Now you're talking to {context.chat_data.get('person')}")
-        update.message.reply_text("(You can change the person at any time)")
-
-
-person_handler = CommandHandler('person', person)
-dispatcher.add_handler(person_handler)
-
-
-@send_action(ChatAction.TYPING)
-def ai(update, context):
-    """ GENERATE TEXT VIA HUGGINGFACE API """
-    person = context.chat_data.get("person", None)
-    if person:
-        p = gpt_neo.Person(person)
-        prompt = p.question(question=update.message.text)
-        t = gpt_neo.TextGen()
-        ai_answer = t.query(prompt)
-
-        # If there has been an error
-        try:
-            update.message.reply_text(profanity.censor(ai_answer))
-        except Exception as e:
-            update.message.reply_text("Let's talk about something else.")
-            print(e, flush=True)
-    else:
-        update.message.reply_text(
-            "You haven't told me a person to talk to yet. Send i.e. /person Jesus")
-
-
-ai_handler = MessageHandler(Filters.text & (~Filters.command), ai)
-dispatcher.add_handler(ai_handler)
+def wuff(update, context):
+    update.message.reply_text("Wuff")
+wuff_handler = MessageHandler(Filters.text & (~Filters.command), wuff)
+dispatcher.add_handler(wuff_handler)
 
 
 def unknown(update, context):
     # Handle the unknown 👀
-    update.message.reply_text(
-        "Sorry, I don't know this command. Maybe a typo? 😭"
-    )
-
-
+    update.message.reply_text("Wuff?")
 unknown_handler = MessageHandler(Filters.command, unknown)
 dispatcher.add_handler(unknown_handler)
 
